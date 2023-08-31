@@ -1,0 +1,46 @@
+{{- $namespace := .Values.namespace -}}
+{{- $env := .Values.env -}}
+{{- with .Values.sr_manager }}
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "{{ $namespace }}-{{ $env }}-{{ .name }}-cm"
+  namespace: {{ $namespace }}
+data:
+  {{- range $k, $v := .environments }}
+  {{ $k }}: {{ $v }}
+  {{- end }}
+{{- end }}
+
+---
+
+{{- with .Values.sr_layers_3d }}
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "{{ $namespace }}-{{ $env }}-{{ .name }}-cm"
+  namespace: {{ $namespace }}
+data:
+  {{- range $k, $v := .environments }}
+  {{ $k }}: {{ $v }}
+  {{- end }}
+{{- end }}
+
+---
+
+{{- with .Values.sr_3dtiles }}
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "{{ $namespace }}-{{ $env }}-{{ .name }}-cm"
+  namespace: {{ $namespace }}
+data:
+  {{- range $k, $v := .environments }}
+  {{ $k }}: {{ $v }}
+  {{- end }}
+{{- end }}
+
+
+---
+
+

@@ -1,0 +1,147 @@
+appName: sr-viewer
+autoscaling:
+  enabled: false
+  maxReplicas: 100
+  minReplicas: 1
+  targetCPUUtilizationPercentage: 80
+nodeAffinityLabel: default
+
+  tz: Asia/Jerusalem
+
+dbs:
+  bereshit_sr_ssd:
+    username: blabla
+    password: blabla
+
+
+  sr_3d_layers:
+    username: blabla
+    password: blabla
+
+    
+
+sr_terrain:
+  container:
+      versionTag: latest
+      imageName: geodata/cesium-terrain-server
+      replicaCount: 1
+      network:
+        deployment: sr-terrain
+        name: sr-terrain
+        hostName: sr-terrain.azure.io
+        port: 8000
+        targetPort: 8000
+  name: sr-terrain
+
+sr_manager:
+  container:
+      versionTag: 1.9.9
+      imageName: lmy/sr-manager
+      replicaCount: 1
+      environments:
+        MANAGER_PORT: 4000
+        DB_HOST: 10.14.1.41
+        DB_PORT: 5434
+        POOL_SIZE: 20
+        DB_DATABASE: bereshit_sr_ssd
+        PS_SERVER_URL: http://ps/services/
+        ALGO_SERVER_URL: http://10.14.1.41:9000/
+        ALGO_TEXTURE_URL: http://10.14.1.41:9000/
+        ESTATE_FILEDOWNLOAD_URL: http://10.14.1.41:4000/download/estate/files/
+        TILES_URL: http://10.14.1.41:8082/
+        PS3D_SERVER_ROUTE: http://10.14.1.41:4020/
+        IMPORT_ESTATE_SERVER_ROUTE: http://10.14.1.41:4000/
+        LOGS_PATH: /data/SR/assets/Logs/LogsRbManager
+        SCHEME_DOMINANT_ATTR: F_CODE
+        JOB_LOG_PATH: /data/SR/assets/Logs/LogsJobs
+        SR_TEMP_DATASOURCE: 287
+        PSDBS_URL: http://10.14.1.12:8085
+        SR_GATE_URL: http://10.14.1.12:4052
+        PGSSLMODE: require
+      network:
+        deployment: sr-manager
+        name: sr-manager
+        hostName: sr-manager.azure.io
+        port: 4000
+        targetPort: 4000
+  name: sr-manager
+
+sr_layers_3d:
+  container:
+      versionTag: 1.0.13
+      imageName: lmy/layer3d-server
+      replicaCount: 1
+      environments:
+        PORT: 4020
+        DB_HOST: 10.14.1.41
+        PGSSLMODE: require
+        DB_PORT: 5432
+        POOL_SIZE: 20
+        DB_DATABASE: sr_3d_layers
+        TILESET_URL: http://10.14.1.41/layers3Dexp
+        TILES_URL: http://10.14.1.41:8082/
+        PS_3D_SERVER_ADDREES: 10.14.1.41
+        IMPORT_DIRECTORY: /data/SR/layers
+        LOGS_PATH: /data/SR/assets/Logs/Logsrb3DServer
+      network:
+        deployment: sr-layers-3d
+        name: sr-layers-3d
+        hostName: sr-layers-3d.azure.io
+        port: 4020
+        targetPort: 4020
+  name: sr-layers-3d
+ 
+
+sr_3dtiles:
+  container:
+      versionTag: 1.9.9
+      imageName: lmy/3d-tileset-server
+      replicaCount: 1
+      environments:
+        CONFIG_SERVICE_PATH: http://rb-manager-sr-editor.apps.cgr2ll7c.northeurope.aroapp.io:80/TilesConfig
+        LAYAR_SERVICE_PATH: http://ps3d-server-sr-editor.apps.cgr2ll7c.northeurope.aroapp.io:80
+        DATA_SOURCE_MAP_PATH: /data/SR/layers/3DTilesSharedBatchMap.json
+        TILES_SET_DIRECTORY: /data/SR/layers
+        MAX_FILED_DAYS: 14d
+        LOGS_PATH: /data/SR/assts/Logs/3dtiles
+        TEMPLATE_DS_TYPES: semantic,real
+        TEMPLATE_DS_LODS: LOD2,LOD3,best
+        PORT: 8082
+      network:
+        deployment: sr-3dtiles
+        name: sr-3dtiles
+        hostName: sr-3dtiles.azure.io
+        port: 8082
+        targetPort: 8082
+  name: sr-3dtiles
+
+# sr_viewer:
+#   container:
+#       versionTag: 2.1.13
+#       imageName: lmy/sr-viewer
+#       replicaCount: 1
+#       environments:
+#         BLABLA: erfe 
+#       network:
+#         deployment: sr-viewer
+#         name: sr-viewer
+#         hostName: sr-viewer.azure.io
+#         port: 80
+#         targetPort: 80
+#   name: sr-viewer
+
+
+env: azure
+namespace: sr-viewer
+pullPolicy: IfNotPresent
+registry: devsracr.azurecr.io
+storage:
+  accessModes: ReadWriteMany
+  name: sr-extractors-data
+  secretName: secret-sasrnfsdev-1
+  azurestorageaccountkey: bW9jaw==
+  azurestorageaccountname: bW9jaw==
+  shareName: data
+  storageCapacity: 100Gi
+  storageClassName: azure-file-sc
+  storageRequest: 50Gi

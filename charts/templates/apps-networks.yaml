@@ -1,0 +1,187 @@
+{{- $namespace := .Values.namespace }}
+{{- $env := .Values.env }}
+{{- $appName := .Values.appName | default "sr-gate" }}
+{{- $sr_terrain := .Values.sr_terrain.name | default "sr-terrain"}}
+{{- $sr_manager := .Values.sr_manager.name | default "sr_manager"}}
+{{- $sr_layers_3d := .Values.sr_layers_3d.name | default "sr_layers_3d"}}
+{{- $sr_3dtiles := .Values.sr_3dtiles.name | default "sr_3dtiles"}}
+{{- with .Values.sr_terrain.network }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .name }}-{{ $env }}"
+  namespace: {{ $namespace }}
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: 'true'
+
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port:  {{ .port }}
+      targetPort: {{ .targetPort }}
+  selector:
+    deploymentconfig: "{{ $gateway_name }}-{{ $env }}"
+
+---
+
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: "{{ .name }}-{{ $env }}"
+  namespace: {{ $namespace }}
+  annotations:
+    ingress.kubernetes.io/proxy-body-size: 100M
+    ingress.kubernetes.io/app-root: "/"
+spec:
+  rules:
+  - host: {{ .hostName }}
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: "{{ .name }}-{{ $env }}"
+            port:
+              number: {{ .targetPort }}
+{{- end }}   
+
+---
+
+
+
+{{- with .Values.sr_manager.network }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .name }}-{{ $env }}"
+  namespace: {{ $namespace }}
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: 'true'
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port:  {{ .port }}
+      targetPort: {{ .targetPort }}
+  selector:
+    deploymentconfig: "{{ $gateway_name }}-{{ $env }}"
+
+---
+
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: "{{ .name }}-{{ $env }}"
+  namespace: {{ $namespace }}
+  annotations:
+    ingress.kubernetes.io/proxy-body-size: 100M
+    ingress.kubernetes.io/app-root: "/"
+spec:
+  rules:
+  - host: {{ .hostName }}
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: "{{ .name }}-{{ $env }}"
+            port:
+              number: {{ .targetPort }}
+{{- end }}   
+
+
+
+---
+
+{{- with .Values.sr_layers_3d.network }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .name }}-{{ $env }}"
+  namespace: {{ $namespace }}
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: 'true'
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port:  {{ .port }}
+      targetPort: {{ .targetPort }}
+  selector:
+    deploymentconfig: "{{ $gateway_name }}-{{ $env }}"
+
+---
+
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: "{{ .name }}-{{ $env }}"
+  namespace: {{ $namespace }}
+  annotations:
+    ingress.kubernetes.io/proxy-body-size: 100M
+    ingress.kubernetes.io/app-root: "/"
+spec:
+  rules:
+  - host: {{ .hostName }}
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: "{{ .name }}-{{ $env }}"
+            port:
+              number: {{ .targetPort }}
+{{- end }}   
+
+
+
+---
+
+{{- with .Values.sr_3dtiles.network }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .name }}-{{ $env }}"
+  namespace: {{ $namespace }}
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: 'true'
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port:  {{ .port }}
+      targetPort: {{ .targetPort }}
+  selector:
+    deploymentconfig: "{{ $gateway_name }}-{{ $env }}"
+
+---
+
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: "{{ .name }}-{{ $env }}"
+  namespace: {{ $namespace }}
+  annotations:
+    ingress.kubernetes.io/proxy-body-size: 100M
+    ingress.kubernetes.io/app-root: "/"
+spec:
+  rules:
+  - host: {{ .hostName }}
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: "{{ .name }}-{{ $env }}"
+            port:
+              number: {{ .targetPort }}
+{{- end }}   

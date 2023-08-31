@@ -1,0 +1,266 @@
+{{- $registry := .Values.registry | default "devsracr.azurecr.io" }}
+  {{- $appName := .Values.appName | default "sr-extractors" }}
+  {{- $nodeAffintyLabel := .Values.nodeAffinityLabel | default "default" }}
+  {{- $namespace := .Values.namespace }}
+  {{- $storageName := .Values.storage.name }}
+  {{- $env := .Values.env | default "dev" }}
+  {{- with .Values.sr_terrain }}
+# 1. terrain
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "{{ .name }}-{{ $env }}"
+  namespace: {{ $namespace }}
+  labels:
+    app: "{{ $appName }}-{{ $env }}"
+spec:
+  replicas: {{ .container.replicaCount }}
+  selector:
+    matchLabels:
+      app: "{{ $appName }}-{{ $env }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ $appName }}-{{ $env }}"
+        deploymentconfig: "{{ .name }}-{{ $env }}"
+    spec:
+      volumes:
+        - name: "{{ $storageName }}-pv-{{ $env }}"
+          persistentVolumeClaim:
+            claimName: "{{ $storageName }}-pvc-{{ $env }}"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: agentpool
+                operator: In
+                values:
+                - "{{ $nodeAffintyLabel }}"
+      restartPolicy: OnFailure
+      containers:
+          name: "{{ .name }}-{{ $env }}"
+          image: "{{ $registry }}/{{ .container.imageName }}:{{ .container.versionTag }}"
+          volumeMounts:
+            - name: "{{ $storageName }}-pv-{{ $env }}"
+              mountPath: /data/tilesets/terrain
+              subPath: DTM/CTBTiles         
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+{{- end }}
+
+---
+
+  {{- with .Values.sr_manager }}
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "{{ .name }}-{{ $env }}"
+  namespace: {{ $namespace }}
+  labels:
+    app: "{{ $appName }}-{{ $env }}"
+spec:
+  replicas: {{ .container.replicaCount }}
+  selector:
+    matchLabels:
+      app: "{{ $appName }}-{{ $env }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ $appName }}-{{ $env }}"
+        deploymentconfig: "{{ .name }}-{{ $env }}"
+    spec:
+      volumes:
+        - name: "{{ $storageName }}-pv-{{ $env }}"
+          persistentVolumeClaim:
+            claimName: "{{ $storageName }}-pvc-{{ $env }}"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: agentpool
+                operator: In
+                values:
+                - "{{ $nodeAffintyLabel }}"
+      restartPolicy: OnFailure
+      containers:
+        - name: "{{ .name }}-{{ $env }}"
+          image: "{{ $registry }}/{{ .container.imageName }}:{{ .container.versionTag }}"
+          volumeMounts:
+            - name: "{{ $storageName }}-pv-{{ $env }}"
+              mountPath: /data
+          env:
+            - name: DB_HOST
+              valueFrom: 
+                secretKeyRef:
+                  name: "bereshit-sr-{{ $env }}-secret"
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: "bereshit-sr-{{ $env }}-secret"
+                  key: password
+            {{- range $k, $v := .environments }}
+            - name: {{ $k }}
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ $namespace }}-{{ $env }}-{{ .name }}-cm"
+                  key: {{ $k }}
+            {{- end }}      
+                        
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+{{- end }}
+
+
+---
+
+  {{- with .Values.sr_layers_3d }}
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "{{ .name }}-{{ $env }}"
+  namespace: {{ $namespace }}
+  labels:
+    app: "{{ $appName }}-{{ $env }}"
+spec:
+  replicas: {{ .container.replicaCount }}
+  selector:
+    matchLabels:
+      app: "{{ $appName }}-{{ $env }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ $appName }}-{{ $env }}"
+        deploymentconfig: "{{ .name }}-{{ $env }}"
+    spec:
+      volumes:
+        - name: "{{ $storageName }}-pv-{{ $env }}"
+          persistentVolumeClaim:
+            claimName: "{{ $storageName }}-pvc-{{ $env }}"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: agentpool
+                operator: In
+                values:
+                - "{{ $nodeAffintyLabel }}"
+      restartPolicy: OnFailure
+      containers:
+        - name: "{{ .name }}-{{ $env }}"
+          image: "{{ $registry }}/{{ .container.imageName }}:{{ .container.versionTag }}"
+          volumeMounts:
+            - name: "{{ $storageName }}-pv-{{ $env }}"
+              mountPath: /data
+          env:
+            - name: DB_HOST
+              valueFrom: 
+                secretKeyRef:
+                  name: "sr-3d-layers-{{ $env }}-secret"
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: "sr-3d-layers-{{ $env }}-secret"
+                  key: password
+            {{- range $k, $v := .environments }}
+            - name: {{ $k }}
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ $namespace }}-{{ $env }}-{{ .name }}-cm"
+                  key: {{ $k }}
+            {{- end }}      
+                        
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+{{- end }}
+
+---
+
+
+  {{- with .Values.sr_3dtiles }}
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "{{ .name }}-{{ $env }}"
+  namespace: {{ $namespace }}
+  labels:
+    app: "{{ $appName }}-{{ $env }}"
+spec:
+  replicas: {{ .container.replicaCount }}
+  selector:
+    matchLabels:
+      app: "{{ $appName }}-{{ $env }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ $appName }}-{{ $env }}"
+        deploymentconfig: "{{ .name }}-{{ $env }}"
+    spec:
+      volumes:
+        - name: "{{ $storageName }}-pv-{{ $env }}"
+          persistentVolumeClaim:
+            claimName: "{{ $storageName }}-pvc-{{ $env }}"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: agentpool
+                operator: In
+                values:
+                - "{{ $nodeAffintyLabel }}"
+      restartPolicy: OnFailure
+      containers:
+        - name: "{{ .name }}-{{ $env }}"
+          image: "{{ $registry }}/{{ .container.imageName }}:{{ .container.versionTag }}"
+          volumeMounts:
+            - name: "{{ $storageName }}-pv-{{ $env }}"
+              mountPath: /data
+          env:
+            {{- range $k, $v := .environments }}
+            - name: {{ $k }}
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ $namespace }}-{{ $env }}-{{ .name }}-cm"
+                  key: {{ $k }}
+            {{- end }}      
+                        
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+{{- end }}
