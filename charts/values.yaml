@@ -138,7 +138,7 @@ pullPolicy: IfNotPresent
 registry: devsracr.azurecr.io
 storage:
   accessModes: ReadWriteMany
-  name: sr-extractors-data
+  name: sr-viewer-data
   secretName: secret-sasrnfsdev-1
   azurestorageaccountkey: bW9jaw==
   azurestorageaccountname: bW9jaw==
