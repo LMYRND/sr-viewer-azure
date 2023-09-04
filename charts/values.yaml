@@ -133,7 +133,7 @@ sr_3dtiles:
 
 
 env: azure
-namespace: sr-viewer
+namespace: sr-viewer-azure
 pullPolicy: IfNotPresent
 registry: devsracr.azurecr.io
 storage:
