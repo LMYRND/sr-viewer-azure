@@ -37,10 +37,10 @@ sr_manager:
       imageName: lmy/sr-manager
       replicaCount: 1
   environments:
-    MANAGER_PORT: 4000
+    MANAGER_PORT: "4000"
     DB_HOST: dev-sr-postgre-server.postgres.database.azure.com
     DB_PORT: "5432"
-    POOL_SIZE: 20
+    POOL_SIZE: "20"
     DB_DATABASE: bereshit_sr_ssd
     PS_SERVER_URL: http://ps/services/
     ALGO_SERVER_URL: http://10.14.1.41:9000/
@@ -52,7 +52,7 @@ sr_manager:
     LOGS_PATH: /data/SR/assets/Logs/LogsRbManager
     SCHEME_DOMINANT_ATTR: F_CODE
     JOB_LOG_PATH: /data/SR/assets/Logs/LogsJobs
-    SR_TEMP_DATASOURCE: 287
+    SR_TEMP_DATASOURCE: "287"
     PSDBS_URL: http://10.14.1.12:8085
     SR_GATE_URL: http://10.14.1.12:4052
     PGSSLMODE: require
