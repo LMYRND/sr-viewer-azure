@@ -113,10 +113,11 @@ spec:
                   name: "bereshit-sr-{{ $env }}-secret"
                   key: password
             {{- range $k, $v := .environments }}
+
             - name: {{ $k }}
               valueFrom:
                 configMapKeyRef:
-                  name: "{{ $namespace }}-{{ $env }}-{{ $name1 }}-cm"
+                  name: "{{ $namespace }}-{{ $env }}-{{ .Values.sr_manager.name  }}-cm"
                   key: {{ $k }}
             {{- end }}      
                         
