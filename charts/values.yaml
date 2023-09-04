@@ -6,8 +6,6 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
 nodeAffinityLabel: default
 
-  tz: Asia/Jerusalem
-
 dbs:
   bereshit_sr_ssd:
     username: blabla
@@ -58,6 +56,7 @@ sr_manager:
         PSDBS_URL: http://10.14.1.12:8085
         SR_GATE_URL: http://10.14.1.12:4052
         PGSSLMODE: require
+        TZ: Asia/Jerusalem
       network:
         deployment: sr-manager
         name: sr-manager
@@ -83,6 +82,7 @@ sr_layers_3d:
         PS_3D_SERVER_ADDREES: 10.14.1.41
         IMPORT_DIRECTORY: /data/SR/layers
         LOGS_PATH: /data/SR/assets/Logs/Logsrb3DServer
+        TZ: Asia/Jerusalem
       network:
         deployment: sr-layers-3d
         name: sr-layers-3d
@@ -107,6 +107,7 @@ sr_3dtiles:
         TEMPLATE_DS_TYPES: semantic,real
         TEMPLATE_DS_LODS: LOD2,LOD3,best
         PORT: 8082
+        TZ: Asia/Jerusalem
       network:
         deployment: sr-3dtiles
         name: sr-3dtiles

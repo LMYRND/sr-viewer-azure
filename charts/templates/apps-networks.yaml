@@ -35,12 +35,16 @@ metadata:
     ingress.kubernetes.io/proxy-body-size: 100M
     ingress.kubernetes.io/app-root: "/"
 spec:
+  tls:
+   - hosts:
+     - {{ .hostName }}
+     secretName: sr-viewer-tls
   rules:
   - host: {{ .hostName }}
     http:
       paths:
       - path: /
-        pathType: ImplementationSpecific
+        pathType: Prefix
         backend:
           service:
             name: "{{ .name }}-{{ $env }}"
@@ -81,12 +85,16 @@ metadata:
     ingress.kubernetes.io/proxy-body-size: 100M
     ingress.kubernetes.io/app-root: "/"
 spec:
+  tls:
+   - hosts:
+     - {{ .hostName }}
+     secretName: sr-viewer-tls
   rules:
   - host: {{ .hostName }}
     http:
       paths:
       - path: /
-        pathType: ImplementationSpecific
+        pathType: Prefix
         backend:
           service:
             name: "{{ .name }}-{{ $env }}"
@@ -127,12 +135,16 @@ metadata:
     ingress.kubernetes.io/proxy-body-size: 100M
     ingress.kubernetes.io/app-root: "/"
 spec:
+  tls:
+   - hosts:
+     - {{ .hostName }}
+     secretName: sr-viewer-tls
   rules:
   - host: {{ .hostName }}
     http:
       paths:
       - path: /
-        pathType: ImplementationSpecific
+        pathType: Prefix
         backend:
           service:
             name: "{{ .name }}-{{ $env }}"
@@ -173,12 +185,16 @@ metadata:
     ingress.kubernetes.io/proxy-body-size: 100M
     ingress.kubernetes.io/app-root: "/"
 spec:
+  tls:
+   - hosts:
+     - {{ .hostName }}
+     secretName: sr-viewer-tls
   rules:
   - host: {{ .hostName }}
     http:
       paths:
       - path: /
-        pathType: ImplementationSpecific
+        pathType: Prefix
         backend:
           service:
             name: "{{ .name }}-{{ $env }}"
