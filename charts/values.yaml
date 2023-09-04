@@ -23,12 +23,12 @@ sr_terrain:
       versionTag: latest
       imageName: geodata/cesium-terrain-server
       replicaCount: 1
-      network:
-        deployment: sr-terrain
-        name: sr-terrain
-        hostName: sr-terrain.azure.io
-        port: 8000
-        targetPort: 8000
+  network:
+    deployment: sr-terrain
+    name: sr-terrain
+    hostName: sr-terrain.azure.io
+    port: 8000
+    targetPort: 8000
   name: sr-terrain
 
 sr_manager:
@@ -36,33 +36,33 @@ sr_manager:
       versionTag: 1.9.9
       imageName: lmy/sr-manager
       replicaCount: 1
-      environments:
-        MANAGER_PORT: 4000
-        DB_HOST: dev-sr-postgre-server.postgres.database.azure.com
-        DB_PORT: 5432
-        POOL_SIZE: 20
-        DB_DATABASE: bereshit_sr_ssd
-        PS_SERVER_URL: http://ps/services/
-        ALGO_SERVER_URL: http://10.14.1.41:9000/
-        ALGO_TEXTURE_URL: http://10.14.1.41:9000/
-        ESTATE_FILEDOWNLOAD_URL: http://10.14.1.41:4000/download/estate/files/
-        TILES_URL: http://10.14.1.41:8082/
-        PS3D_SERVER_ROUTE: http://10.14.1.41:4020/
-        IMPORT_ESTATE_SERVER_ROUTE: http://10.14.1.41:4000/
-        LOGS_PATH: /data/SR/assets/Logs/LogsRbManager
-        SCHEME_DOMINANT_ATTR: F_CODE
-        JOB_LOG_PATH: /data/SR/assets/Logs/LogsJobs
-        SR_TEMP_DATASOURCE: 287
-        PSDBS_URL: http://10.14.1.12:8085
-        SR_GATE_URL: http://10.14.1.12:4052
-        PGSSLMODE: require
-        TZ: Asia/Jerusalem
-      network:
-        deployment: sr-manager
-        name: sr-manager
-        hostName: sr-manager.azure.io
-        port: 4000
-        targetPort: 4000
+  environments:
+    MANAGER_PORT: 4000
+    DB_HOST: dev-sr-postgre-server.postgres.database.azure.com
+    DB_PORT: 5432
+    POOL_SIZE: 20
+    DB_DATABASE: bereshit_sr_ssd
+    PS_SERVER_URL: http://ps/services/
+    ALGO_SERVER_URL: http://10.14.1.41:9000/
+    ALGO_TEXTURE_URL: http://10.14.1.41:9000/
+    ESTATE_FILEDOWNLOAD_URL: http://10.14.1.41:4000/download/estate/files/
+    TILES_URL: http://10.14.1.41:8082/
+    PS3D_SERVER_ROUTE: http://10.14.1.41:4020/
+    IMPORT_ESTATE_SERVER_ROUTE: http://10.14.1.41:4000/
+    LOGS_PATH: /data/SR/assets/Logs/LogsRbManager
+    SCHEME_DOMINANT_ATTR: F_CODE
+    JOB_LOG_PATH: /data/SR/assets/Logs/LogsJobs
+    SR_TEMP_DATASOURCE: 287
+    PSDBS_URL: http://10.14.1.12:8085
+    SR_GATE_URL: http://10.14.1.12:4052
+    PGSSLMODE: require
+    TZ: Asia/Jerusalem
+  network:
+    deployment: sr-manager
+    name: sr-manager
+    hostName: sr-manager.azure.io
+    port: 4000
+    targetPort: 4000
   name: sr-manager
 
 sr_layers_3d:
@@ -70,25 +70,25 @@ sr_layers_3d:
       versionTag: 1.0.13
       imageName: lmy/layer3d-server
       replicaCount: 1
-      environments:
-        PORT: 4020
-        DB_HOST: dev-sr-postgre-server.postgres.database.azure.com
-        PGSSLMODE: require
-        DB_PORT: 5432
-        POOL_SIZE: 20
-        DB_DATABASE: sr_3d_layers
-        TILESET_URL: http://10.14.1.41/layers3Dexp
-        TILES_URL: http://10.14.1.41:8082/
-        PS_3D_SERVER_ADDREES: 10.14.1.41
-        IMPORT_DIRECTORY: /data/SR/layers
-        LOGS_PATH: /data/SR/assets/Logs/Logsrb3DServer
-        TZ: Asia/Jerusalem
-      network:
-        deployment: sr-layers-3d
-        name: sr-layers-3d
-        hostName: sr-layers-3d.azure.io
-        port: 4020
-        targetPort: 4020
+  environments:
+    PORT: 4020
+    DB_HOST: dev-sr-postgre-server.postgres.database.azure.com
+    PGSSLMODE: require
+    DB_PORT: 5432
+    POOL_SIZE: 20
+    DB_DATABASE: sr_3d_layers
+    TILESET_URL: http://10.14.1.41/layers3Dexp
+    TILES_URL: http://10.14.1.41:8082/
+    PS_3D_SERVER_ADDREES: 10.14.1.41
+    IMPORT_DIRECTORY: /data/SR/layers
+    LOGS_PATH: /data/SR/assets/Logs/Logsrb3DServer
+    TZ: Asia/Jerusalem
+  network:
+    deployment: sr-layers-3d
+    name: sr-layers-3d
+    hostName: sr-layers-3d.azure.io
+    port: 4020
+    targetPort: 4020
   name: sr-layers-3d
  
 
@@ -97,23 +97,23 @@ sr_3dtiles:
       versionTag: 1.9.9
       imageName: lmy/3d-tileset-server
       replicaCount: 1
-      environments:
-        CONFIG_SERVICE_PATH: http://rb-manager-sr-editor.apps.cgr2ll7c.northeurope.aroapp.io:80/TilesConfig
-        LAYAR_SERVICE_PATH: http://ps3d-server-sr-editor.apps.cgr2ll7c.northeurope.aroapp.io:80
-        DATA_SOURCE_MAP_PATH: /data/SR/layers/3DTilesSharedBatchMap.json
-        TILES_SET_DIRECTORY: /data/SR/layers
-        MAX_FILED_DAYS: 14d
-        LOGS_PATH: /data/SR/assts/Logs/3dtiles
-        TEMPLATE_DS_TYPES: semantic,real
-        TEMPLATE_DS_LODS: LOD2,LOD3,best
-        PORT: 8082
-        TZ: Asia/Jerusalem
-      network:
-        deployment: sr-3dtiles
-        name: sr-3dtiles
-        hostName: sr-3dtiles.azure.io
-        port: 8082
-        targetPort: 8082
+  environments:
+    CONFIG_SERVICE_PATH: http://rb-manager-sr-editor.apps.cgr2ll7c.northeurope.aroapp.io:80/TilesConfig
+    LAYAR_SERVICE_PATH: http://ps3d-server-sr-editor.apps.cgr2ll7c.northeurope.aroapp.io:80
+    DATA_SOURCE_MAP_PATH: /data/SR/layers/3DTilesSharedBatchMap.json
+    TILES_SET_DIRECTORY: /data/SR/layers
+    MAX_FILED_DAYS: 14d
+    LOGS_PATH: /data/SR/assts/Logs/3dtiles
+    TEMPLATE_DS_TYPES: semantic,real
+    TEMPLATE_DS_LODS: LOD2,LOD3,best
+    PORT: 8082
+    TZ: Asia/Jerusalem
+  network:
+    deployment: sr-3dtiles
+    name: sr-3dtiles
+    hostName: sr-3dtiles.azure.io
+    port: 8082
+    targetPort: 8082
   name: sr-3dtiles
 
 # sr_viewer:
