@@ -101,7 +101,7 @@ spec:
             - name: "{{ $storageName }}-pv-{{ $env }}"
               mountPath: /data
           env:
-            - name: DB_HOST
+            - name: DB_USER
               valueFrom: 
                 secretKeyRef:
                   name: "bereshit-sr-{{ $env }}-secret"
@@ -174,7 +174,7 @@ spec:
             - name: "{{ $storageName }}-pv-{{ $env }}"
               mountPath: /data
           env:
-            - name: DB_HOST
+            - name: DB_USER
               valueFrom: 
                 secretKeyRef:
                   name: "sr-3d-layers-{{ $env }}-secret"
