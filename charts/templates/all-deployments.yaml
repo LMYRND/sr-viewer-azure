@@ -5,7 +5,9 @@
   {{- $storageName := .Values.storage.name }}
   {{- $env := .Values.env | default "dev" }}
   {{- with .Values.sr_terrain }}
-
+  {{- $name1 := .Values.sr_manager.name }}
+  {{- $name2 := .Values.sr_layers_3d.name }}
+  {{- $name3 := .Values.sr_3dtiles.name }}
 # 1. terrain
 
 kind: Deployment
@@ -59,7 +61,7 @@ spec:
 {{- end }}
 
 ---
-  {{- $name := .Values.sr_manager.name }}
+  
   {{- with .Values.sr_manager }}
 kind: Deployment
 apiVersion: apps/v1
@@ -114,7 +116,7 @@ spec:
             - name: {{ $k }}
               valueFrom:
                 configMapKeyRef:
-                  name: "{{ $namespace }}-{{ $env }}-{{ $name }}-cm"
+                  name: "{{ $namespace }}-{{ $env }}-{{ $name1 }}-cm"
                   key: {{ $k }}
             {{- end }}      
                         
@@ -131,7 +133,7 @@ spec:
 
 
 ---
-  {{- $name := .Values.sr_layers_3d.name }}
+
   {{- with .Values.sr_layers_3d }}
 
 kind: Deployment
@@ -187,7 +189,7 @@ spec:
             - name: {{ $k }}
               valueFrom:
                 configMapKeyRef:
-                  name: "{{ $namespace }}-{{ $env }}-{{ $name }}-cm"
+                  name: "{{ $namespace }}-{{ $env }}-{{ $name2 }}-cm"
                   key: {{ $k }}
             {{- end }}      
                         
@@ -204,7 +206,7 @@ spec:
 
 ---
 
-  {{- $name := .Values.sr_3dtiles.name }}
+
   {{- with .Values.sr_3dtiles }}
 kind: Deployment
 apiVersion: apps/v1
@@ -249,7 +251,7 @@ spec:
             - name: {{ $k }}
               valueFrom:
                 configMapKeyRef:
-                  name: "{{ $namespace }}-{{ $env }}-{{ $name }}-cm"
+                  name: "{{ $namespace }}-{{ $env }}-{{ $name3 }}-cm"
                   key: {{ $k }}
             {{- end }}      
                         
