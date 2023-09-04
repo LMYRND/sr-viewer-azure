@@ -5,7 +5,7 @@
   {{- $storageName := .Values.storage.name }}
   {{- $env := .Values.env | default "dev" }}
   {{- with .Values.sr_terrain }}
-  {{- $name1 := .Values.sr_manager.name }}
+
   {{- $name2 := .Values.sr_layers_3d.name }}
   {{- $name3 := .Values.sr_3dtiles.name }}
 # 1. terrain
@@ -61,7 +61,7 @@ spec:
 {{- end }}
 
 ---
-  
+  {{- $name1 := .Values.sr_manager.name }}
   {{- with .Values.sr_manager }}
 kind: Deployment
 apiVersion: apps/v1
