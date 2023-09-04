@@ -59,7 +59,7 @@ spec:
 {{- end }}
 
 ---
-
+  {{- $name1 := .Values.sr_manager.name}}
   {{- with .Values.sr_manager }}
 kind: Deployment
 apiVersion: apps/v1
@@ -111,11 +111,10 @@ spec:
                   name: "bereshit-sr-{{ $env }}-secret"
                   key: password
             {{- range $k, $v := .environments }}
-
             - name: {{ $k }}
               valueFrom:
                 configMapKeyRef:
-                  name: "{{ $namespace }}-{{ $env }}-{{ .Values.sr_manager.name  }}-cm"
+                  name: "{{ $namespace }}-{{ $env }}-{{ $name1  }}-cm"
                   key: {{ $k }}
             {{- end }}      
                         
