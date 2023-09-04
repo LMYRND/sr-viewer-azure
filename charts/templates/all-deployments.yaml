@@ -59,9 +59,8 @@ spec:
 {{- end }}
 
 ---
-
-  {{- with .Values.sr_manager }}
   {{- $name := .Values.sr_manager.name }}
+  {{- with .Values.sr_manager }}
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -132,9 +131,9 @@ spec:
 
 
 ---
-
-  {{- with .Values.sr_layers_3d }}
   {{- $name := .Values.sr_layers_3d.name }}
+  {{- with .Values.sr_layers_3d }}
+
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -205,9 +204,8 @@ spec:
 
 ---
 
-
-  {{- with .Values.sr_3dtiles }}
   {{- $name := .Values.sr_3dtiles.name }}
+  {{- with .Values.sr_3dtiles }}
 kind: Deployment
 apiVersion: apps/v1
 metadata:
