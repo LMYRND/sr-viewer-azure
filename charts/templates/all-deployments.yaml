@@ -6,8 +6,6 @@
   {{- $env := .Values.env | default "dev" }}
   {{- with .Values.sr_terrain }}
 
-  {{- $name2 := .Values.sr_layers_3d.name }}
-  {{- $name3 := .Values.sr_3dtiles.name }}
 # 1. terrain
 
 kind: Deployment
@@ -61,7 +59,7 @@ spec:
 {{- end }}
 
 ---
-  {{- $name1 := .Values.sr_manager.name }}
+
   {{- with .Values.sr_manager }}
 kind: Deployment
 apiVersion: apps/v1
@@ -190,7 +188,7 @@ spec:
             - name: {{ $k }}
               valueFrom:
                 configMapKeyRef:
-                  name: "{{ $namespace }}-{{ $env }}-{{ $name2 }}-cm"
+                  name: "{{ $namespace }}-{{ $env }}-{{ .Values.sr_layers_3d.name }}-cm"
                   key: {{ $k }}
             {{- end }}      
                         
@@ -252,7 +250,7 @@ spec:
             - name: {{ $k }}
               valueFrom:
                 configMapKeyRef:
-                  name: "{{ $namespace }}-{{ $env }}-{{ $name3 }}-cm"
+                  name: "{{ $namespace }}-{{ $env }}-{{ .Values.sr_3dtiles.name }}-cm"
                   key: {{ $k }}
             {{- end }}      
                         
