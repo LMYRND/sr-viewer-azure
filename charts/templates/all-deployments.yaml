@@ -40,7 +40,7 @@ spec:
                 - "{{ $nodeAffintyLabel }}"
       restartPolicy: OnFailure
       containers:
-          name: "{{ .name }}-{{ $env }}"
+        - name: "{{ .name }}-{{ $env }}"
           image: "{{ $registry }}/{{ .container.imageName }}:{{ .container.versionTag }}"
           volumeMounts:
             - name: "{{ $storageName }}-pv-{{ $env }}"
