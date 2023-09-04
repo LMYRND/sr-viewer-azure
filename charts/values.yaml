@@ -139,7 +139,7 @@ registry: devsracr.azurecr.io
 storage:
   accessModes: ReadWriteMany
   name: sr-viewer-data
-  secretName: secret-sasrnfsdev-1
+  secretName: secret-sr-viewer
   azurestorageaccountkey: bW9jaw==
   azurestorageaccountname: bW9jaw==
   shareName: data
