@@ -40,8 +40,8 @@ sr_manager:
       replicaCount: 1
       environments:
         MANAGER_PORT: 4000
-        DB_HOST: 10.14.1.41
-        DB_PORT: 5434
+        DB_HOST: dev-sr-postgre-server.postgres.database.azure.com
+        DB_PORT: 5432
         POOL_SIZE: 20
         DB_DATABASE: bereshit_sr_ssd
         PS_SERVER_URL: http://ps/services/
@@ -73,7 +73,7 @@ sr_layers_3d:
       replicaCount: 1
       environments:
         PORT: 4020
-        DB_HOST: 10.14.1.41
+        DB_HOST: dev-sr-postgre-server.postgres.database.azure.com
         PGSSLMODE: require
         DB_PORT: 5432
         POOL_SIZE: 20
