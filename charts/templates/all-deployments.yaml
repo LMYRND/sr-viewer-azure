@@ -114,7 +114,7 @@ spec:
             - name: {{ $k }}
               valueFrom:
                 configMapKeyRef:
-                  name: "{{ $namespace }}-{{ $env }}-{{ $name1  }}-cm"
+                  name: "{{ $namespace }}-{{ $env }}-{{ $name1 }}-cm"
                   key: {{ $k }}
             {{- end }}      
                         
@@ -131,7 +131,7 @@ spec:
 
 
 ---
-
+  {{- $name2 := .Values.sr_layers_3d.name }}
   {{- with .Values.sr_layers_3d }}
 
 kind: Deployment
@@ -187,7 +187,7 @@ spec:
             - name: {{ $k }}
               valueFrom:
                 configMapKeyRef:
-                  name: "{{ $namespace }}-{{ $env }}-{{ .Values.sr_layers_3d.name }}-cm"
+                  name: "{{ $namespace }}-{{ $env }}-{{ $name2 }}-cm"
                   key: {{ $k }}
             {{- end }}      
                         
@@ -204,7 +204,7 @@ spec:
 
 ---
 
-
+  {{- $name3 := .Values.sr_3dtiles.name }}
   {{- with .Values.sr_3dtiles }}
 kind: Deployment
 apiVersion: apps/v1
@@ -249,7 +249,7 @@ spec:
             - name: {{ $k }}
               valueFrom:
                 configMapKeyRef:
-                  name: "{{ $namespace }}-{{ $env }}-{{ .Values.sr_3dtiles.name }}-cm"
+                  name: "{{ $namespace }}-{{ $env }}-{{ $name3 }}-cm"
                   key: {{ $k }}
             {{- end }}      
                         
