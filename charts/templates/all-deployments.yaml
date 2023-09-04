@@ -58,6 +58,7 @@ spec:
       maxSurge: 25%
 {{- end }}
 
+
 ---
   {{- $name1 := .Values.sr_manager.name}}
   {{- with .Values.sr_manager }}
