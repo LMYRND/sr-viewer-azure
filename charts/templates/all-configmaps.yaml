@@ -27,7 +27,7 @@ data:
   SR_GATE_URL: "http://10.14.1.12:4052"
   PGSSLMODE: "require"
   TZ: "Asia/Jerusalem"
-
+{{- end }}
 ---
 
 {{- with .Values.sr_layers_3d }}
