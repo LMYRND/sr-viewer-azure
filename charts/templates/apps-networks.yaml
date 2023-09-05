@@ -12,7 +12,8 @@ kind: Service
 metadata:
   name: "{{ .name }}-{{ $env }}"
   namespace: {{ $namespace }}
-
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: 'true'
 
 spec:
   type: LoadBalancer
@@ -63,8 +64,8 @@ kind: Service
 metadata:
   name: "{{ .name }}-{{ $env }}"
   namespace: {{ $namespace }}
-  # annotations:
-  #   service.beta.kubernetes.io/azure-load-balancer-internal: 'true'
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: 'true'
 spec:
   type: LoadBalancer
   ports:
@@ -114,6 +115,8 @@ kind: Service
 metadata:
   name: "{{ .name }}-{{ $env }}"
   namespace: {{ $namespace }}
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: 'true'
 spec:
   type: LoadBalancer
   ports:
