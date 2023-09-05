@@ -34,6 +34,7 @@ metadata:
     ingress.kubernetes.io/proxy-body-size: 100M
     ingress.kubernetes.io/app-root: "/"
 spec:
+  ingressClassName: nginx
   tls:
    - hosts:
      - {{ .hostName }}
@@ -84,6 +85,7 @@ metadata:
     ingress.kubernetes.io/proxy-body-size: 100M
     ingress.kubernetes.io/app-root: "/"
 spec:
+  ingressClassName: nginx
   tls:
    - hosts:
      - {{ .hostName }}
@@ -132,6 +134,7 @@ metadata:
     ingress.kubernetes.io/proxy-body-size: 100M
     ingress.kubernetes.io/app-root: "/"
 spec:
+  ingressClassName: nginx
   tls:
    - hosts:
      - {{ .hostName }}
@@ -182,6 +185,7 @@ metadata:
     ingress.kubernetes.io/proxy-body-size: 100M
     ingress.kubernetes.io/app-root: "/"
 spec:
+  ingressClassName: nginx
   tls:
    - hosts:
      - {{ .hostName }}
